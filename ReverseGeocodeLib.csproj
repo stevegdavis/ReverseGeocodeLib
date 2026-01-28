@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Version>1.0.0.8</Version>
+	  <AssemblyTitle>ReverseGeocodeLib</AssemblyTitle>
+	  <PackageId>ReverseGeocodeLib</PackageId>
+	  <Title>Reverse Geocode Lib</Title>
+	  <Authors>SDSDevelopment.ReverseGeocodeLib</Authors>
+	  <Product>ReverseGeocodeLib</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\countries.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\countries.bin" />
+  </ItemGroup>  
+
+</Project>

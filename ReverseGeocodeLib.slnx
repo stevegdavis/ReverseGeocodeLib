@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../XUnitTests/XUnitTests.csproj" Id="9508d37a-11fa-4a1a-81fd-9e417256fb47" />
+  <Project Path="ReverseGeocodeLib.csproj" />
+</Solution>
