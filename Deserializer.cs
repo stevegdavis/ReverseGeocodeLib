@@ -1,56 +1,60 @@
 ﻿using ReverseGeocodeLib.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace ReverseGeocodeLib;
 
 public class Deserializer
 {
-    public static async Task<List<AreaData>> DeserializeAsync(string path)
+    public static async Task<List<AreaData>?> DeserializeAsync(string path)
     {
+        if (!File.Exists(path))
+            return null;
         // Placeholder for deserialization logic
         // Read binary file back into data
         List<AreaData> data = new List<AreaData>();
-
-        byte[] fileBytes = await File.ReadAllBytesAsync(path);
-
-        using (var memoryStream = new MemoryStream(fileBytes))
-        using (var binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
+        byte[] bytes = await File.ReadAllBytesAsync(path);
+        try
         {
-            // Read count of countries
-            int countryCount = binaryReader.ReadInt32();
-
-            for (int i = 0; i < countryCount; i++)
+            using (var memoryStream = new MemoryStream(bytes))
+            using (var binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
             {
-                // Read country code
-                string id = binaryReader.ReadString();
+                // Read count of countries
+                int countryCount = binaryReader.ReadInt32();
 
-                // Read country name
-                string name = binaryReader.ReadString();
-
-                // Read polygons
-                int ringCount = binaryReader.ReadInt32();
-                var coordinates = new List<List<List<double>>>();
-
-                for (int j = 0; j < ringCount; j++)
+                for (int i = 0; i < countryCount; i++)
                 {
-                    int coordinateCount = binaryReader.ReadInt32();
-                    var ring = new List<List<double>>();
+                    // Read country code
+                    string id = binaryReader.ReadString();
 
-                    for (int k = 0; k < coordinateCount; k++)
+                    // Read country name
+                    string name = binaryReader.ReadString();
+
+                    // Read polygons
+                    int ringCount = binaryReader.ReadInt32();
+                    var coordinates = new List<List<List<double>>>();
+
+                    for (int j = 0; j < ringCount; j++)
                     {
-                        double longitude = binaryReader.ReadDouble();
-                        double latitude = binaryReader.ReadDouble();
-                        ring.Add(new List<double> { longitude, latitude });
+                        int coordinateCount = binaryReader.ReadInt32();
+                        var ring = new List<List<double>>();
+
+                        for (int k = 0; k < coordinateCount; k++)
+                        {
+                            double longitude = binaryReader.ReadDouble();
+                            double latitude = binaryReader.ReadDouble();
+                            ring.Add(new List<double> { longitude, latitude });
+                        }
+
+                        coordinates.Add(ring);
                     }
 
-                    coordinates.Add(ring);
+                    data.Add(new AreaData(id, name, coordinates));
                 }
-
-                data.Add(new AreaData(id, name, coordinates));
             }
+        }
+        catch (Exception ex)
+        {
+            data = null;
         }
         return data;
     }

@@ -7,30 +7,30 @@ namespace ReverseGeocodeLib;
 
 public interface IReverseGeocodeService
 {
-    static abstract LocationInfo FindCountry(GeoLocation location);
+    LocationInfo? FindCountry(GeoLocation location);
 
     //LocationInfo FindUSAState(GeoLocation location);
 
-    static abstract LocationInfo FindAreaData(GeoLocation location, List<AreaData> areaDataList);
+    LocationInfo? FindAreaData(GeoLocation location, List<AreaData> areaDataList);
 }
 
 public class ReverseGeocodeService : IReverseGeocodeService
 {
-    private static List<AreaData>? countries;
-    public static async Task LoadCountriesAsync()
-    {
-        using var stream = Assembly
-            .GetExecutingAssembly()
-            .GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.Data.countries.bin")!;
-        countries = await Deserializer.DeserializeAsync(stream);
-    }
+    private static List<AreaData>? _countries;
+    
     public IReverseGeocodeDataProvider? CountryDataProvider { get; set; }
     public IReverseGeocodeDataProvider? USAStateDataProvider { get; set; }
 
-    public static LocationInfo FindCountry(GeoLocation location)
+    public ReverseGeocodeService(List<AreaData> countries)
     {
-        if (countries == null) throw new Exception("No country data provider set. Set via 'CountryDataProvider' property.");
-        return FindAreaData(location, countries);// CountryDataProvider.Data);
+        _countries = countries;        
+        //this.USAStateDataProvider = new USAStateDataProvider();
+    }
+
+    public LocationInfo? FindCountry(GeoLocation location)
+    {
+        if (_countries == null) throw new Exception("No country data provider set. Set via 'CountryDataProvider' property.");
+        return FindAreaData(location, _countries);// CountryDataProvider.Data);
     }
 
     //public LocationInfo FindUSAState(GeoLocation location)
@@ -39,13 +39,13 @@ public class ReverseGeocodeService : IReverseGeocodeService
     //    return FindAreaData(location, USAStateDataProvider.Data);
     //}
 
-    public static LocationInfo FindAreaData(GeoLocation location, List<AreaData> areaDataList)
+    public LocationInfo? FindAreaData(GeoLocation location, List<AreaData> areaDataList)
     {
         var matchedAreaData = areaDataList.Find(areaData => IsLocationInArea(location, areaData));
-        return matchedAreaData != null ? LocationInfo.FromAreaData(matchedAreaData) : new LocationInfo("", "");// null;
+        return matchedAreaData != null ? LocationInfo.FromAreaData(matchedAreaData) : null;
     }
 
-    private static bool IsLocationInArea(GeoLocation location, AreaData data)
+    private bool IsLocationInArea(GeoLocation location, AreaData data)
     {
         return data.coordinates.Any(polygon =>
         {
