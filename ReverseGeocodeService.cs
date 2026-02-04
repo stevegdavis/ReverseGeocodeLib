@@ -7,6 +7,7 @@ namespace ReverseGeocodeLib;
 public interface IReverseGeocodeService
 {
     static abstract LocationInfo FindCountry(GeoLocation location);
+    static abstract LocationInfo FindCity(GeoLocation location);
 
     //LocationInfo FindUSAState(GeoLocation location);
 
@@ -16,6 +17,7 @@ public interface IReverseGeocodeService
 public class ReverseGeocodeService : IReverseGeocodeService
 {
     private static List<AreaData>? countries;
+    private static List<AreaData>? cities;
     public static async Task LoadCountriesAsync()
     {
         using var stream = Assembly
@@ -23,13 +25,27 @@ public class ReverseGeocodeService : IReverseGeocodeService
             .GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.Data.countries.bin")!;
         countries = await Deserializer.DeserializeAsync(stream);
     }
+    public static async Task LoadCitiesAsync()
+    {
+        
+        using var stream = Assembly
+            .GetExecutingAssembly()
+            .GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.Data.cities.bin")!;
+        cities = await Deserializer.DeserializeAsync(stream);
+    }
     public IReverseGeocodeDataProvider? CountryDataProvider { get; set; }
+    public IReverseGeocodeDataProvider? CityDataProvider { get; set; }
     public IReverseGeocodeDataProvider? USAStateDataProvider { get; set; }
 
     public static LocationInfo FindCountry(GeoLocation location)
     {
         if (countries == null) throw new Exception("No country data provider set. Set via 'CountryDataProvider' property.");
         return FindAreaData(location, countries);// CountryDataProvider.Data);
+    }
+    public static LocationInfo FindCity(GeoLocation location)
+    {
+        if (cities == null) throw new Exception("No city data provider set. Set via 'CityDataProvider' property.");
+        return FindAreaData(location, cities);// CountryDataProvider.Data);
     }
 
     //public LocationInfo FindUSAState(GeoLocation location)
