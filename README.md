@@ -26,17 +26,11 @@ class Program
         // Find country and city
         var country = ReverseGeocodeService.FindCountry(location);
         var city = ReverseGeocodeService.FindCity(location);
-
-        Console.WriteLine($"Country: {country.Name} (Id: {country.Id})");
-        Console.WriteLine($"City: {city.Name} (Id: {city.Id})");
+        // Country can return more than one match if the point lies within multiple areas (for example, enclaves), so we take the first match here for demonstration.
+        Console.WriteLine($"Country: {country[0].Name} (Id: {country[0].Id})");
+        Console.WriteLine($"City: {city[0].Name} (Id: {city[0].Id})");
     }
 }
-```
-
-You can also create a GeoLocation from WKT (Well Known Text):
-
-```csharp
-var location = GeoLocation.FromWellKnownText("POINT (-0.1278 51.5074)");
 ```
 
 Notes

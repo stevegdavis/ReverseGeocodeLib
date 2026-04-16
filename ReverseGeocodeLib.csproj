@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Version>1.0.2</Version>
+	  <Version>1.2.1</Version>
 	  <AssemblyTitle>ReverseGeocodeLib</AssemblyTitle>
 	  <PackageId>ReverseGeocodeLib</PackageId>
 	  <Title>Reverse Geocode Lib</Title>
@@ -16,11 +16,21 @@
   <ItemGroup>
     <None Remove="Data\cities.bin" />
     <None Remove="Data\countries.bin" />
+    <None Remove="Data\france-departments.bin" />
+    <None Remove="Data\france-regions.bin" />
+    <None Remove="Data\gb.bin" />
+    <None Remove="Data\netherlands-provinces.bin" />
+    <None Remove="Data\usa-states.bin" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Data\cities.bin" />
     <EmbeddedResource Include="Data\countries.bin" />
+    <EmbeddedResource Include="Data\france-departments.bin" />
+    <EmbeddedResource Include="Data\france-regions.bin" />
+    <EmbeddedResource Include="Data\gb.bin" />
+    <EmbeddedResource Include="Data\netherlands-provinces.bin" />
+    <EmbeddedResource Include="Data\usa-states.bin" />
   </ItemGroup>  
 
 </Project>
