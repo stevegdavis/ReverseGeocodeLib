@@ -1,6 +1,6 @@
-# SDSDevelopment.ReverseGeocode
+# SDSDevelopment.ReverseGeocodeLib
 
-Reverse geocode a country or city based on location point (latitude ; longitude). All code is offline — no API calls to map services necessary.
+Reverse geocode a country, city, UK county, USA state, France department, France region, Netherlands province based on location point (latitude ; longitude). All code is offline — no API calls to map services necessary.
 
 ## Usage
 
@@ -51,5 +51,7 @@ Notes
   - ReverseGeocodeService.FindCountry(GeoLocation)
   - ReverseGeocodeService.FindCity(GeoLocation)
 
-## Built from
-https://github.com/InquisitorJax/Wibci.CountryReverseGeocode
+## Acknowledgements to
+https://github.com/InquisitorJax/Wibci.CountryReverseGeocode for the orignal project 
+
+https://simplemaps.com for map data
