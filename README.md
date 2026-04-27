@@ -1,57 +1,62 @@
-# SDSDevelopment.ReverseGeocodeLib
-
-Reverse geocode a country, city, UK county, USA state, France department, France region, Netherlands province based on location point (latitude ; longitude). All code is offline — no API calls to map services necessary.
-
+# ReverseGeocodeLib
 ## Usage
 
-Below is a basic example showing how to load the embedded country and city data and use the library to find the country and city for a given latitude/longitude. You must call the Load...Async methods before calling FindCountry / FindCity; otherwise the library will throw an exception.
+Below is a basic example showing how to load the embedded country and city data and use the library to find the country and city for a given latitude/longitude. You must call the `Load...Async` methods before calling any `Find...` methods.
 
 ```csharp
 using System;
 using System.Threading.Tasks;
 using ReverseGeocodeLib;
-using ReverseGeocodeLib.Models;
 
 class Program
 {
     static async Task Main(string[] args)
     {
-        // Load embedded binary data (Data.countries.bin and Data.cities.bin are embedded resources)
+        // Load embedded binary data (these should be embedded as resources)
         await ReverseGeocodeService.LoadCountriesAsync();
         await ReverseGeocodeService.LoadCitiesAsync();
 
-        // Create a location (latitude, longitude)
-        var location = new GeoLocation { Latitude = 51.5074, Longitude = -0.1278 }; // London
+        // Specify coordinates (latitude, longitude). Example: London
+        double latitude = 51.5074;
+        double longitude = -0.1278;
 
         // Find country and city
-        var country = ReverseGeocodeService.FindCountry(location);
-        var city = ReverseGeocodeService.FindCity(location);
-        // Country can return more than one match if the point lies within multiple areas (for example, enclaves), so we take the first match here for demonstration.
-        Console.WriteLine($"Country: {country[0].Name} (Id: {country[0].Id})");
-        Console.WriteLine($"City: {city[0].Name} (Id: {city[0].Id})");
+        var countries = ReverseGeocodeService.FindCountry(latitude, longitude);
+        var cities = ReverseGeocodeService.FindCity(latitude, longitude);
+
+        // The methods return a list of tuples (Id, Name)
+        if (countries.Count > 0)
+            Console.WriteLine($"Country: {countries[0].Name} (Id: {countries[0].Id})");
+        else
+            Console.WriteLine("No country match.");
+
+        if (cities.Count > 0)
+            Console.WriteLine($"City: {cities[0].Name} (Id: {cities[0].Id})");
+        else
+            Console.WriteLine("No city match.");
     }
 }
 ```
 
-Notes
-- If no area matches the provided location, the returned LocationInfo will have empty `Id` and `Name` strings.
-- The library uses a point-in-polygon algorithm to test whether the point lies inside an area's polygon(s).
-- The embedded data files are expected under the assembly manifest resource path:
-  `{AssemblyName}.Data.countries.bin` and `{AssemblyName}.Data.cities.bin`.
-  - Ensure your .csproj embeds the binary resources (for example):
+Other available lookups:
+- `ReverseGeocodeService.LoadUSAStatesAsync()` and `FindUSAState(latitude, longitude)`
+- `ReverseGeocodeService.LoadFranceDepartmentsAsync()` and `FindFranceDepartment(latitude, longitude)`
+- `ReverseGeocodeService.LoadFranceRegionsAsync()` and `FindFranceRegion(latitude, longitude)`
+- `ReverseGeocodeService.LoadUKCountiesAsync()` and `FindUKCounty(latitude, longitude)`
+- `ReverseGeocodeService.LoadNetherlandsProvincesAsync()` and `FindNetherlandsProvince(latitude, longitude)`
+
+**Notes:**
+- If no area matches the provided location, you’ll get an empty list.
+- The library uses a point-in-polygon algorithm to test if the point is inside an area’s polygon(s).
+- Embedded data files are expected as assembly resources with names such as `{AssemblyName}.Data.countries.bin`, `{AssemblyName}.Data.cities.bin`, etc.
+  - Confirm your `.csproj` includes:
     ```xml
     <ItemGroup>
       <EmbeddedResource Include="Data\countries.bin" />
       <EmbeddedResource Include="Data\cities.bin" />
+      <!-- etc -->
     </ItemGroup>
-    ```
-- The public entry points are:
-  - ReverseGeocodeService.LoadCountriesAsync()
-  - ReverseGeocodeService.LoadCitiesAsync()
-  - ReverseGeocodeService.FindCountry(GeoLocation)
-  - ReverseGeocodeService.FindCity(GeoLocation)
 
 ## Acknowledgements to
 https://github.com/InquisitorJax/Wibci.CountryReverseGeocode for the orignal project 
-
 https://simplemaps.com for map data
