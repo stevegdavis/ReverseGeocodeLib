@@ -11,6 +11,10 @@
 	  <Title>Reverse Geocode Lib</Title>
 	  <Authors>SDSDevelopment</Authors>
 	  <Product>ReverseGeocodeLib</Product>
+	  <PackageProjectUrl></PackageProjectUrl>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <RepositoryUrl>https://github.com/stevegdavis/ReverseGeocodeLib</RepositoryUrl>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +35,17 @@
     <EmbeddedResource Include="Data\gb.bin" />
     <EmbeddedResource Include="Data\netherlands-provinces.bin" />
     <EmbeddedResource Include="Data\usa-states.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>  
 
 </Project>

@@ -34,6 +34,19 @@ class Program
             Console.WriteLine($"City: {cities[0].Name} (Id: {cities[0].Id})");
         else
             Console.WriteLine("No city match.");
+
+        // With an enclave the country could have more than 1 result, no way to tell which is correct
+        if (country == null || country.Count == 0)
+        {
+            Console.WriteLine("Country: Not found");
+        }
+        else
+        {
+            if (country.Count > 1)
+                Console.WriteLine($"Countries: {country[0].Item2} or {country[1].Item2}");
+            else
+                Console.WriteLine($"Country: {country[0].Item2}");
+        }
     }
 }
 ```
