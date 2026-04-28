@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Version>1.2.1</Version>
+	  <Version>1.2.2</Version>
 	  <AssemblyTitle>ReverseGeocodeLib</AssemblyTitle>
 	  <PackageId>ReverseGeocodeLib</PackageId>
 	  <Title>Reverse Geocode Lib</Title>
@@ -15,6 +15,7 @@
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/stevegdavis/ReverseGeocodeLib</RepositoryUrl>
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <Description>Reverse geocode a country or city based on location point (latitude ; longitude) All code is offline - no api calls to map services necessary</Description>
   </PropertyGroup>
 
   <ItemGroup>
