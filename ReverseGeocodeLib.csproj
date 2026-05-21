@@ -15,7 +15,7 @@
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/stevegdavis/ReverseGeocodeLib</RepositoryUrl>
 	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	  <Description>Reverse geocode a country or city based on location point (latitude ; longitude) All code is offline - no api calls to map services necessary</Description>
+	  <Description>A .Net library coded in C# Reverse geocode a country, region, USA state or city based on location point (latitude ; longitude) All code is offline - no api calls to map services necessary</Description>
   </PropertyGroup>
 
   <ItemGroup>
